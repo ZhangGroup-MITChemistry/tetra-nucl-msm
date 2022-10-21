@@ -12,7 +12,7 @@ parser.add_argument('--template_plumed_restraint', default='template_plumed_rest
 parser.add_argument('--output_plumed_restraint', default='plumed_restraint.txt', help='output plumed file')
 args = parser.parse_args()
 
-dist_txt = '/home/gridsan/sliu/Projects/tetra-nucl-msm/prep-init-snapshots/selected_sample_dist.txt'
+dist_txt = '/nfs/pool002/users/smliu/tetra-nucl-msm/prep-init-snapshots/selected_sample_dist.txt'
 dist_data = np.loadtxt(dist_txt, skiprows=1)
 
 job_id = args.job_id
