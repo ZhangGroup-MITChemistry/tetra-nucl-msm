@@ -1,4 +1,5 @@
 run*/
 slurm-output/
 backup/
+plumed-driver-output/
 
