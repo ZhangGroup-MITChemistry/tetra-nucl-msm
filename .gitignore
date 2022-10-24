@@ -2,4 +2,6 @@ run*/
 slurm-output/
 backup/
 plumed-driver-output/
+all-snapshots/
+selected-snapshots/
 

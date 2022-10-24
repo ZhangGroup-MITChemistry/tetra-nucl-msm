@@ -36,7 +36,7 @@ cd run${curr} # run the following commands in run${curr}
 sed "s/RANDOMSEED/$RANDOM/g" ../../template_template.lammps > ../../template.lammps 
 $pyPath/python  ../../get_lammps_input.py ../run${prev} ./ ${curr}
 
-mpirun -np 1 $lammpsdir/lmp_openmpi_plumed246_3spn_2016_sbm_rigidtemper_tanh -partition 1x1 -in proteinDna_sim.in
+mpirun -np 2 $lammpsdir/lmp_openmpi_plumed246_3spn_2016_sbm_rigidtemper_tanh -partition 1x2 -in proteinDna_sim.in
 
 cd ../
 

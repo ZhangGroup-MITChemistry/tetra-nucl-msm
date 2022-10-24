@@ -64,7 +64,7 @@ delete_bonds nucl4 multi remove
 
 #####################################################
 timestep            10.0
-thermo              10000
+thermo              20000
 thermo_style        multi
 thermo_modify flush yes
 
@@ -75,7 +75,7 @@ reset_timestep 0
 
 fix                 pl all plumed plumedfile plumed.txt outfile plumed.out
 
-dump                1 all dcd 10000 DUMP_FILE.dcd
+dump                1 all dcd 20000 DUMP_FILE.dcd
 dump_modify         1 sort id
 
 fix                 rigidBody core rigid/nvt group 4 nucl1 nucl2 nucl3 nucl4 temp ${T} ${T} 1000.0 
