@@ -14,8 +14,8 @@ def genLammpsInput(restartFolder, outFolder, runId):
         for line in open(lammps_template).readlines():
             items = line.split()
             fh.write(line)
-            #if len(items) >= 2 and items[0] == "read_data":
-            #    fh.write("read_dump           ../../DUMP_initial.dcd 0 x y z box no format molfile dcd /home/xclin/lib/vmd.old/plugins/LINUXAMD64/molfile\n")
+            if len(items) >= 2 and items[0] == "read_data":
+                fh.write("read_dump           /nfs/pool002/users/smliu/tetra-nucl-msm/simulations-nrl-172/extend-init-snapshot/extended.dcd 0 x y z box no format molfile dcd /home/xclin/lib/vmd.old/plugins/LINUXAMD64/molfile\n")
         fh.close()
 
     else: # for the restarting run, read the final snapshot of the former run

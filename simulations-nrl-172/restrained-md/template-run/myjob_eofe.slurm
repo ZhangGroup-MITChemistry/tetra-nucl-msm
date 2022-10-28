@@ -3,7 +3,7 @@
 #SBATCH --partition=sched_mit_binz,newnodes,sched_mit_hill
 #SBATCH --time=12:00:00
 #SBATCH --mem=4G
-#SBATCH --exclude=node[445,455,457,462]
+#SBATCH --exclude=node[445,455,457,462,464]
 #SBATCH --export=ALL
 #SBATCH --constraint=centos7
 
@@ -18,7 +18,7 @@ sim_type=restraint
 to_main_dir=/nfs/pool002/users/smliu/tetra-nucl-msm/simulations-nrl-${nrl}/${sim_type}-md
 
 # print the node name that the job uses
-#echo "job uses node $SLURMD_NODENAME"
+echo "job uses node ${SLURMD_NODENAME}"
 
 # For plumed 2.4.6 MATHEVAL package
 export PLUMED_USE_LEPTON=yes
@@ -45,13 +45,6 @@ echo "simulation finished"
 if [ "${next}" -le "${max_id}" ]
 then
     sbatch myjob_eofe-${next}.slurm
-else
-    cd ..
-    cwd1=$(pwd)
-    cd ${to_main_dir}
-    cwd2=$(pwd)
-    echo "move ${cwd1} to ${cwd2}"
-    mv ${cwd1} .
 fi
 
 echo "job done"
