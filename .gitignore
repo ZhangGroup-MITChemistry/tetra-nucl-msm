@@ -4,4 +4,9 @@ backup/
 plumed-driver-output/
 all-snapshots/
 selected-snapshots/
+**/*.dcd
+**/*.slurm
+unbiased-md/
+restrained-md/
+restrained-md-final-snapshots/
 

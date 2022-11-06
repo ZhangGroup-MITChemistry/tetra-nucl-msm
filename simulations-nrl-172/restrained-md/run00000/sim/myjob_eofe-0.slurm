@@ -1,9 +1,12 @@
+#!/bin/bash 
+#SBATCH --job-name=tetranucl 
+#SBATCH --output=slurm-%j-curr-0.out 
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
 #SBATCH --partition=sched_mit_binz,newnodes,sched_mit_hill
 #SBATCH --time=12:00:00
 #SBATCH --mem=4G
-#SBATCH --exclude=node[445,455,457,462,464,448]
+#SBATCH --exclude=node[445,455,457,462,464]
 #SBATCH --export=ALL
 #SBATCH --constraint=centos7
 
@@ -25,7 +28,8 @@ export PLUMED_USE_LEPTON=yes
 
 lammpsdir="/home/xclin/bin/awsem/bin"
 
-#INPUT_CURR_AND_MAX_ID
+curr=0 
+max_id=0 
 prev=$(($curr - 1))
 next=$(($curr + 1))
 curr=$(printf "%'03d" ${curr}) 
