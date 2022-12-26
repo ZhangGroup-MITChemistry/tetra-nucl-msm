@@ -1,0 +1,21 @@
+UNITS LENGTH=A TIME=fs ENERGY=kcal/mol
+
+all_CA: GROUP NDX_FILE=index.ndx NDX_GROUP=All_CA
+nucl1_core_CA: GROUP NDX_FILE=index.ndx NDX_GROUP=nucl1_core
+nucl2_core_CA: GROUP NDX_FILE=index.ndx NDX_GROUP=nucl2_core
+nucl3_core_CA: GROUP NDX_FILE=index.ndx NDX_GROUP=nucl3_core
+nucl4_core_CA: GROUP NDX_FILE=index.ndx NDX_GROUP=nucl4_core
+
+WHOLEMOLECULES ENTITY0=all_CA
+
+c1: CENTER ATOMS=nucl1_core_CA NOPBC
+c2: CENTER ATOMS=nucl2_core_CA NOPBC
+c3: CENTER ATOMS=nucl3_core_CA NOPBC
+c4: CENTER ATOMS=nucl4_core_CA NOPBC
+
+twist_angle: ANGLE ATOMS=c1,c3,c4,c2
+
+restraint-twist_angle: RESTRAINT ARG=twist_angle KAPPA=5.0 AT=RefValue
+
+PRINT STRIDE=5000 ARG=twist_angle.* FILE=twisting_angle.txt
+PRINT STRIDE=5000 ARG=restraint-twist_angle.* FILE=moving_bias.txt
