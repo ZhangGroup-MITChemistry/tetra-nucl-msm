@@ -5,6 +5,7 @@ plumed-driver-output/
 all-snapshots/
 selected-snapshots/
 **/*.dcd
+**/*.xml
 **/*.slurm
 unbiased-md/
 restrained-md/
