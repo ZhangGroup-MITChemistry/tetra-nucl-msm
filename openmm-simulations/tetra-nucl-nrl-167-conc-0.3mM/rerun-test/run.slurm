@@ -10,8 +10,6 @@ module load cuda/10.0
 
 cp ../build-system/start.pdb .
 
-# energy.csv and backup_system_energy.csv should be almost identical
-
 python rerun.py ../build-system/nonrigid_system.xml energy.csv
 
 python rerun.py ../build-system/backup/nonrigid_system.xml backup_system_energy.csv
