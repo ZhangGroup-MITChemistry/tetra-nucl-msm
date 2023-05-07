@@ -50,7 +50,6 @@ with open('plumed.txt', 'w') as f:
     f.write('UNITS LENGTH=nm TIME=ps ENERGY=kj/mol\n\n')
     
     # rebuild tetra-nucleosome
-    # for tetra-nucleosome, rebuild nucleosome 1, linker 1, nucleosome 2, linker 2, ...
     entity0 = []
     for i in range(4):
         a1 = tetra_nucl_core_ssDNA1_start_id[i]
