@@ -91,12 +91,15 @@ for j in range(3):
     plt.ylabel('g(r) (mM)')
     if j == 0:
         plt.title('Nucleosome 1, 4 as references')
+        plt.tight_layout()
         plt.savefig('pictures/radial_distribution_nucl_1_4_ref.pdf')
     elif j == 1:
         plt.title('Nucleosome 2, 3 as references')
+        plt.tight_layout()
         plt.savefig('pictures/radial_distribution_nucl_2_3_ref.pdf')
     else:
         plt.title('Single nucleosomes as references')
+        plt.tight_layout()
         plt.savefig('pictures/radial_distribution_single_nucl_ref.pdf')
     plt.close()
 
