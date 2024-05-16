@@ -29,7 +29,7 @@ box_length = 55 * unit.nanometer # cubic box length in unit nm
 V = box_length**3 # cubic box volume in unit nm^3
 
 # compute distance matrices
-# for simplicity, as single nucleosomes are all identical, we only keep two single nucleosomes to save time and memory
+# for simplicity, as single nucleosomes are all identical, we only keep several single nucleosomes to save time and memory
 distances = {}
 data_keys = list(nopbc_data.keys()) # list including integers from 0 to 529
 n_frames_list = []
@@ -38,7 +38,7 @@ for k in data_keys:
     traj = traj[:, :8, :] # only keep 8 nucleosomes, including the tetra-nucleosome and 4 single nucleosomes
     # construct distance matrices
     n_frames = traj.shape[0]
-    n_atoms = traj.shape[1]
+    n_atoms = traj.shape[1] # same as n_nucls
     distances[k] = np.zeros((n_frames, n_atoms, n_atoms))
     rows, cols = np.triu_indices(n_atoms, k=1)
     r = traj[:, rows, :] - traj[:, cols, :]

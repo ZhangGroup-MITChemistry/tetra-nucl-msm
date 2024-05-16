@@ -37,7 +37,7 @@ for k in data_keys:
     traj = nopbc_data[k] # ndarray of shape (n_frames, n_nucls, 3), and n_nucls = 30
     # construct distance matrices
     n_frames = traj.shape[0]
-    n_atoms = traj.shape[1]
+    n_atoms = traj.shape[1] # same as n_nucls
     assert n_atoms == 30
     distances[k] = np.zeros((n_frames, n_atoms, n_atoms))
     rows, cols = np.triu_indices(n_atoms, k=1)
@@ -49,9 +49,9 @@ for k in data_keys:
 
 # compute and draw radial distribution functions for each stage
 # divide into 4 stages based on the time intervals
-# divide nucleosomes into 3 types based on topology
+# divide nucleosomes into 3 types based on topology and symmetry
 stages = {0: [0, 20], 1: [20, 40], 2: [40, 50], 3: [60, 70]} # in time unit ns
-nucl_type_to_ref_index = {0: 0, 1: 1, 2: 4} # use nucleosome as the reference for each type
+nucl_type_to_ref_index = {0: 0, 1: 1, 2: 4} # use one nucleosome as the reference for each type
 hists = {}
 bins = np.linspace(0.1, 20, 50) # start from 0.1 to avoid including reference nucleosome itself
 x = (bins[1:] + bins[:-1]) / 2
