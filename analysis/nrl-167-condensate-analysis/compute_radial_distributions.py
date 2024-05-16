@@ -35,8 +35,6 @@ distances = {}
 data_keys = list(nopbc_data.keys()) # list including integers from 0 to 529
 for k in data_keys:
     traj = nopbc_data[k] # ndarray of shape (n_frames, n_nucls, 3), and n_nucls = 30
-    #print(type(traj))
-    #print(traj.shape)
     # construct distance matrices
     n_frames = traj.shape[0]
     n_atoms = traj.shape[1]
@@ -53,7 +51,7 @@ for k in data_keys:
 # divide into 4 stages based on the time intervals
 # divide nucleosomes into 3 types based on topology
 stages = {0: [0, 20], 1: [20, 40], 2: [40, 50], 3: [60, 70]} # in time unit ns
-nucl_types_to_indices = {0: [0, 3], 1: [1, 2], 2: list(range(4, 30))}
+nucl_type_to_ref_index = {0: 0, 1: 1, 2: 4} # use nucleosome as the reference for each type
 hists = {}
 bins = np.linspace(0.1, 20, 50) # start from 0.1 to avoid including reference nucleosome itself
 x = (bins[1:] + bins[:-1]) / 2
@@ -66,14 +64,14 @@ for i in range(len(stages)):
     for j in range(3):
         # j is the reference nucleosome type index
         samples = [] # collect all the samples with given reference nucleosome type and stage
-        ref_nucl_indices = nucl_types_to_indices[j]
+        ref_nucl_index = nucl_type_to_ref_index[j]
         for k in data_keys:
             d = distances[k]
             n_frames = d.shape[0]
             end_frame_index = min(n_frames - 1, end_frame_index)
             assert end_frame_index > start_frame_index
             mask = np.full((n_atoms, n_atoms), False)
-            mask[ref_nucl_indices, :] = True
+            mask[ref_nucl_index, :] = True
             np.fill_diagonal(mask, False)
             samples += d[start_frame_index:(end_frame_index + 1), mask].flatten().tolist()
         samples = np.array(samples)
@@ -82,6 +80,7 @@ for i in range(len(stages)):
 rho = (30 / (NA * V)).value_in_unit(unit.millimolar) # rho in unit mM
 for j in range(3):
     # j is the reference nucleosome type index
+    ref_nucl_index = nucl_type_to_ref_index[j]
     for i in range(4):
         # i is the stage index
         g = (30 - 1) * hists[i][j] / (4 * np.pi * rho * x**2)
@@ -89,21 +88,9 @@ for j in range(3):
     plt.legend()
     plt.xlabel('r (nm)')
     plt.ylabel('g(r) (mM)')
-    if j == 0:
-        plt.title('Nucleosome 1, 4 as references')
-        plt.tight_layout()
-        plt.savefig('pictures/radial_distribution_nucl_1_4_ref.pdf')
-    elif j == 1:
-        plt.title('Nucleosome 2, 3 as references')
-        plt.tight_layout()
-        plt.savefig('pictures/radial_distribution_nucl_2_3_ref.pdf')
-    else:
-        plt.title('Single nucleosomes as references')
-        plt.tight_layout()
-        plt.savefig('pictures/radial_distribution_single_nucl_ref.pdf')
+    plt.title(f'Nucleosome {ref_nucl_index + 1} as reference')
+    plt.tight_layout()
+    plt.savefig(f'pictures/radial_distribution_nucl_{ref_nucl_index + 1}_ref.pdf')
     plt.close()
-
-
-
 
 

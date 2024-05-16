@@ -13,3 +13,6 @@ restrained-md-final-snapshots/
 **/*.tar.gz
 **/*.csv
 **/*.npy
+**/*.pdf
+
+
