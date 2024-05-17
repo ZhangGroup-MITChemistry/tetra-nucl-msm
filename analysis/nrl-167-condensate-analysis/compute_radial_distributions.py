@@ -87,7 +87,7 @@ for j in range(3):
         plt.plot(x, g, label=f'{stages[i][0]}-{stages[i][1]} ns')
     plt.legend()
     plt.xlabel('r (nm)')
-    plt.ylabel('g(r) (mM)')
+    plt.ylabel('g(r)')
     plt.title(f'Nucleosome {ref_nucl_index + 1} as reference')
     plt.tight_layout()
     plt.savefig(f'pictures/radial_distribution_nucl_{ref_nucl_index + 1}_ref.pdf')
