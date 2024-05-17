@@ -30,7 +30,7 @@ V = box_length**3 # cubic box volume in unit nm^3
 
 # compute distance matrices
 # for simplicity, as single nucleosomes are all identical, we only keep several single nucleosomes to save time and memory
-distances = {}
+trajs = {}
 data_keys = list(nopbc_data.keys()) # list including integers from 0 to 529
 n_frames_list = []
 for k in data_keys:
@@ -38,12 +38,7 @@ for k in data_keys:
     traj = traj[:, :8, :] # only keep 8 nucleosomes, including the tetra-nucleosome and 4 single nucleosomes
     # construct distance matrices
     n_frames = traj.shape[0]
-    n_atoms = traj.shape[1] # same as n_nucls
-    distances[k] = np.zeros((n_frames, n_atoms, n_atoms))
-    rows, cols = np.triu_indices(n_atoms, k=1)
-    r = traj[:, rows, :] - traj[:, cols, :]
-    distances[k][:, rows, cols] = np.linalg.norm(r, axis=-1)
-    distances[k][:, cols, rows] = distances[k][:, rows, cols] # symmetric
+    trajs[k] = traj
     n_frames_list.append(n_frames)
 min_n_frames = min(n_frames_list)
 t = np.arange(min_n_frames) * delta_time_ns
@@ -58,8 +53,9 @@ for i in range(3):
         a1, a2 = p
         MSD = np.zeros(min_n_frames)
         for k in data_keys:
-            r = distances[k][:min_n_frames, a1, a2] - distances[k][0, a1, a2]
-            MSD += r**2
+            r = trajs[k][:min_n_frames, a1, :] - trajs[k][:min_n_frames, a2, :]
+            r -= r[0]
+            MSD += np.sum(r**2, axis=1)
         MSD /= len(data_keys)
         plt.plot(t, MSD, label=f'nucleosomes {a1 + 1}-{a2 + 1}')
     plt.xlabel('t (ns)')
