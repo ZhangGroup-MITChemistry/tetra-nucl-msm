@@ -5,6 +5,7 @@ try:
 except ImportError:
     import simtk.unit as unit
 import mdtraj
+from scipy.stats import linregress
 import sys
 import os
 import matplotlib.pyplot as plt
@@ -57,9 +58,15 @@ for i in range(3):
             r -= r[0]
             MSD += np.sum(r**2, axis=1)
         MSD /= len(data_keys)
-        plt.plot(t, MSD, label=f'nucleosomes {a1 + 1}-{a2 + 1}')
+        log10_t = np.log10(t[1:]) # use log10, this does not affect the slope
+        log10_MSD = np.log10(MSD[1:]) # use log10, this does not affect the slope
+        result = linregress(log10_t, log10_MSD)
+        slope = result.slope
+        plt.plot(t, MSD, label=f'nucleosomes {a1 + 1}-{a2 + 1}, a={slope:.2f}')
     plt.xlabel('t (ns)')
     plt.ylabel('MSD (nm^2)')
+    plt.xscale('log') # draw in log10 scale
+    plt.yscale('log') # draw in log10 scale
     plt.legend()
     if i == 0:
         plt.title('MSD between nucleosome 1 and single nucleosomes')
