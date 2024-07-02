@@ -53,7 +53,7 @@ for k in data_keys:
 stages = {0: [0, 20], 1: [20, 40], 2: [40, 50], 3: [60, 70]} # in time unit ns
 nucl_type_to_ref_index = {0: 0, 1: 1, 2: 4} # use one nucleosome as the reference for each type
 hists = {}
-bins = np.linspace(0.1, 20, 50) # start from 0.1 to avoid including reference nucleosome itself
+bins = np.linspace(0.1, 20, 100) # start from 0.1 to avoid including reference nucleosome itself
 x = (bins[1:] + bins[:-1]) / 2
 for i in range(len(stages)):
     # i is the stage index
@@ -77,13 +77,14 @@ for i in range(len(stages)):
         samples = np.array(samples)
         hists[i][j] = np.histogram(samples, bins=bins, density=True)[0]
 
-rho = (30 / (NA * V)).value_in_unit(unit.millimolar) # rho in unit mM
+rho = (30 / V).value_in_unit(unit.nanometer**-3)
 for j in range(3):
     # j is the reference nucleosome type index
     ref_nucl_index = nucl_type_to_ref_index[j]
     for i in range(4):
         # i is the stage index
-        g = (30 - 1) * hists[i][j] / (4 * np.pi * rho * x**2)
+        # follow the equation in SI
+        g = hists[i][j] / (4 * np.pi * rho * x**2)
         plt.plot(x, g, label=f'{stages[i][0]}-{stages[i][1]} ns')
     plt.legend()
     plt.xlabel('r (nm)')
