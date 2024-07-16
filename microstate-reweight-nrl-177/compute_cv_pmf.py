@@ -47,6 +47,33 @@ for i in range(num_states):
 selected_distrajs = np.concatenate(selected_distrajs)
 
 # compute PMF
+# for d13
+d13_samples = selected_distrajs[:, 1]
+p, bin_edges = np.histogram(d13_samples, bins=100, density=True)
+r = (bin_edges[:-1] + bin_edges[1:]) / 2
+pmf = -np.log(p)
+pmf -= np.min(pmf) # set the minimum to 0
+df_d13_pmf = pd.DataFrame({'r (nm)': r, 'PMF (kT)': pmf})
+df_d13_pmf.to_csv(f'{output_dir}/d13_pmf.csv', index=False)
+
+with PdfPages(f'{output_dir}/d13.pdf') as pdf:
+    plt.plot(r, p)
+    plt.xlabel('d13 (nm)')
+    plt.ylabel('Probability density')
+    plt.title(f'Probability density along d13')
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+
+    plt.plot(r, pmf)
+    plt.xlabel('d13 (nm)')
+    plt.ylabel('PMF (kT)')
+    plt.title(f'PMF along d13')
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+
+# for d23
 d23_samples = selected_distrajs[:, 3]
 p, bin_edges = np.histogram(d23_samples, bins=100, density=True)
 r = (bin_edges[:-1] + bin_edges[1:]) / 2
@@ -71,5 +98,6 @@ with PdfPages(f'{output_dir}/d23.pdf') as pdf:
     plt.tight_layout()
     pdf.savefig()
     plt.close()
+
 
 
