@@ -99,5 +99,65 @@ with PdfPages(f'{output_dir}/d23.pdf') as pdf:
     pdf.savefig()
     plt.close()
 
+# for angle 1-2-3
+d12_samples = selected_distrajs[:, 0]
+d13_samples = selected_distrajs[:, 1]
+d23_samples = selected_distrajs[:, 3]
+a123_samples = np.arccos((d12_samples**2 + d23_samples**2 - d13_samples**2) / (2 * d12_samples * d23_samples))
+p, bin_edges = np.histogram(a123_samples, bins=100, density=True)
+theta = (bin_edges[:-1] + bin_edges[1:]) / 2
+pmf = -np.log(p)
+pmf -= np.min(pmf) # set the minimum to 0
+df_a123_pmf = pd.DataFrame({'theta (rad)': theta, 'PMF (kT)': pmf})
+df_a123_pmf.to_csv(f'{output_dir}/a123_pmf.csv', index=False)
 
+with PdfPages(f'{output_dir}/a123.pdf') as pdf:
+    plt.plot(theta, p)
+    plt.xlabel('a123 (rad)')
+    plt.ylabel('Probability density')
+    plt.title(f'Probability density along a123')
+    plt.xlim(0, np.pi)
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+
+    plt.plot(theta, pmf)
+    plt.xlabel('a123 (rad)')
+    plt.ylabel('PMF (kT)')
+    plt.title(f'PMF along a123')
+    plt.xlim(0, np.pi)
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+
+# for angle 2-3-4
+d23_samples = selected_distrajs[:, 3]
+d24_samples = selected_distrajs[:, 4]
+d34_samples = selected_distrajs[:, 5]
+a234_samples = np.arccos((d23_samples**2 + d34_samples**2 - d24_samples**2) / (2 * d23_samples * d34_samples))
+p, bin_edges = np.histogram(a234_samples, bins=100, density=True)
+theta = (bin_edges[:-1] + bin_edges[1:]) / 2
+pmf = -np.log(p)
+pmf -= np.min(pmf) # set the minimum to 0
+df_a234_pmf = pd.DataFrame({'theta (rad)': theta, 'PMF (kT)': pmf})
+df_a234_pmf.to_csv(f'{output_dir}/a234_pmf.csv', index=False)
+
+with PdfPages(f'{output_dir}/a234.pdf') as pdf:
+    plt.plot(theta, p)
+    plt.xlabel('a234 (rad)')
+    plt.ylabel('Probability density')
+    plt.title(f'Probability density along a234')
+    plt.xlim(0, np.pi)
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
+
+    plt.plot(theta, pmf)
+    plt.xlabel('a234 (rad)')
+    plt.ylabel('PMF (kT)')
+    plt.title(f'PMF along a234')
+    plt.xlim(0, np.pi)
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
 
