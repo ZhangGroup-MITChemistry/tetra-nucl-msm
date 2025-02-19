@@ -14,5 +14,6 @@ restrained-md-final-snapshots/
 **/*.csv
 **/*.npy
 **/*.pdf
+**/*.pdb
 
 
